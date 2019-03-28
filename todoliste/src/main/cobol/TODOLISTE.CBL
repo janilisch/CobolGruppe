@@ -119,7 +119,7 @@
           DISPLAY "<li style=""color: " FONTCOLOR """>"
                     "<label>"
                     "<input type = ""checkbox"" "
-                    "name = ""todo"" "
+                    "name = ""checkbox"" "
                     "id = "" " ITEM-ID IN WS-TDLIST " "">"
                     STATUS-STRING " "
       	            ITEM-DATE IN WS-TDLIST(7:2) "."
