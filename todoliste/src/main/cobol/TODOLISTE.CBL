@@ -120,7 +120,7 @@
                     "<label>"
                     "<input type = ""checkbox"" "
                     "name = ""checkbox"" "
-                    "id = "" " ITEM-ID IN WS-TDLIST " "">"
+                    "id = """ ITEM-ID IN WS-TDLIST """>"
                     STATUS-STRING " "
       	            ITEM-DATE IN WS-TDLIST(7:2) "."
                     ITEM-DATE IN WS-TDLIST(5:2) ", "

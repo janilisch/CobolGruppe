@@ -55,12 +55,12 @@
 	}
 	function checkCheckboxesArray(){
 		var checkboxes = document.getElementsByName("checkbox");
-		var ids = [];
+		var ids = "";
 		// loop over them all
 		for (var i=0; i<checkboxes.length; i++) {
 			// And stick the checked ones onto an array...
 			if (checkboxes[i].checked) {
-				ids.push(checkboxes[i].id);
+				ids = ids + checkboxes[i].id;
 			}
 		}
 		return ids;
@@ -70,17 +70,13 @@
     }
 	
 	function aendernSelected(){
-		alert("Hi");
 		alert(checkCheckboxesArray());
 	}
 	function deleteSelected(){
-		alert("Hi2");
 	}
 	function deleteConceld(){
-		alert("Hi3");
 	}
 	function deleteDone(){
-		alert("Hi4");
 	}
     window.onload = showTodoList;
     </script>
