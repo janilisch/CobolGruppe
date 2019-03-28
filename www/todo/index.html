@@ -2,7 +2,6 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" type="text/css" href="mystyle.css">
-	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <script type="text/javascript">
     function initXmlRequests() {
         var xmlHttpReq = false;
@@ -25,13 +24,17 @@
         }
     }
     function addToTodolist() {
-        initXmlRequests();
-        var form = document.forms['f1'];
-        var word = form.content.value;
-        qstr = 'content=' + escape(word);  // NOTE: no '?' before querystring
-        qstr = qstr + "&action=add\n"
-        self.xmlHttpReq.send(qstr);
-        showTodoList();
+		var word = document.getElementById("content").value;
+		if(word == ""){
+			alert("Bitte trage zuerst einen Text ein");
+		} else {
+			initXmlRequests();
+			qstr = 'content=' + escape(word);  // NOTE: no '?' before querystring
+			qstr = qstr + "&action=add\n"
+			self.xmlHttpReq.send(qstr);
+			document.getElementById("content").value = "";
+			showTodoList();
+		}
     }
     function showTodoList() {
         initXmlRequests();
@@ -50,10 +53,31 @@
 	    WinPrint.print();
 	    WinPrint.close();
 	}
-
+	function checkCheckboxesArray(){
+		var checkboxes = document.getElementsByName("checkbox");
+		var ids = [];
+		// loop over them all
+		for (var i=0; i<checkboxes.length; i++) {
+			// And stick the checked ones onto an array...
+			if (checkboxes[i].checked) {
+				ids.push(checkboxes[i].id);
+			}
+		}
+		return ids;
+	}
     function updatepage(str){
         document.getElementById("result").innerHTML = str;
     }
+	
+	function aendernSelected(){
+		alert(checkCheckboxesArray());
+	}
+	function deleteSelected(){
+	}
+	function deleteConceld(){
+	}
+	function deleteDone(){
+	}
     window.onload = showTodoList;
     </script>
     <title>ToDo Liste in COBOL</title>
@@ -64,7 +88,7 @@
         <form name="f1">
             <h2>Todo hinzuf&uuml;gen: </h2>
 			<div align="center">
-				<input name="content" type="text" text="50" placeholder="ToDo hier eingeben" >
+				<input name="content" id="content" type="text" text="50" placeholder="ToDo hier eingeben" >
 				<input value="Eintragen" type="button" class="button" onclick='javascript:addToTodolist()'>
 			</div>
 					
@@ -78,8 +102,9 @@
 							<option> Orange </option>
 						</select>
 					</label>
-					<label> <h3>Status:</h3>
-						<select name="color" class="selectBox">
+
+					<label> <h3>Status</h3>
+						<select name="status" style="width: 150px;">
 							<option> To Do </option>
 							<option> Doing </option>
 							<option> Done </option>
@@ -87,10 +112,10 @@
 						</select>
 					</label>
 			
-            <input value="Ändern" type="button" class="button">
-            <input value="Löschen" type="button" class="button">
-            <input value="Alle 'Cancelled' löschen" class="button buttonRed" type="button">
-            <input value="Alle 'Done' löschen" class="button buttonRed" type="button">
+            <input value="Ändern" type="button" class="button" onclick='javascript:aendernSelected()'>
+            <input value="Löschen" type="button" class="button" onclick='javascript:deleteSelected()'>
+            <input value="Alle 'Cancelled' löschen" class="button buttonRed" type="button" onclick='javascript:deleteConceld()'>
+            <input value="Alle 'Done' löschen" class="button buttonRed" type="button" onclick='javascript:deleteDone()'>
             <input value="Ganze Liste löschen" class="button buttonRed" type="button" onclick='javascript:clearList()'>
 			</div>
 			
