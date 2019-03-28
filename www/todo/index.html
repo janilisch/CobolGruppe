@@ -49,15 +49,6 @@
 	    WinPrint.print();
 	    WinPrint.close();
 	}
-    function removeFromList() {
-        initXmlRequests();
-        var form = document.forms['f1'];
-        var word = form.content.value;
-        qstr = 'content=' + escape(word);  // NOTE: no '?' before querystring
-        qstr = qstr + "&action=delete-spe\n"
-        self.xmlHttpReq.send(qstr);
-        showTodoList();
-    }
 
     function updatepage(str){
         document.getElementById("result").innerHTML = str;
