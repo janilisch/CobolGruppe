@@ -55,22 +55,35 @@
 	}
 	function checkCheckboxesArray(){
 		var checkboxes = document.getElementsByName("checkbox");
-		var ids = [];
+		var ids = "";
 		// loop over them all
 		for (var i=0; i<checkboxes.length; i++) {
 			// And stick the checked ones onto an array...
 			if (checkboxes[i].checked) {
-				ids.push(checkboxes[i].id);
+				ids = ids + checkboxes[i].id;
 			}
 		}
 		return ids;
 	}
+	function selectedColor(){
+		var colorSelect = document.getElementById("color")
+		return colorSelect.options[colorSelect.selectedIndex].value;
+		
+	}
+	function selectedStatus(){
+		var statusSelect = document.getElementById("status")
+		return statusSelect.options[statusSelect.selectedIndex].value;
+	}
+	
+	
     function updatepage(str){
         document.getElementById("result").innerHTML = str;
     }
 	
 	function aendernSelected(){
-		alert(checkCheckboxesArray());
+		alert("selectedToDos: "+checkCheckboxesArray());
+		alert("selectedColor: "+selectedColor());
+		alert("selectedStatus: "+selectedStatus());
 	}
 	function deleteSelected(){
 	}
@@ -93,30 +106,29 @@
 			</div>
 					
 			<div align="left">
-			<label> <h3>Farbe:</h3>
-						<select name="color">
-							<option> Schwarz </option>
-							<option> Rot </option>
-							<option> Blau </option>
-							<option> Grün </option>
-							<option> Orange </option>
+					<label> <h3>Farbe:</h3>
+						<select name="color" id="color">
+							<option value="0"> Schwarz </option>
+							<option value="1"> Blau </option>
+							<option value="2"> Rot </option>
+							<option value="3"> Grün </option>
+							<option value="4"> Orange </option>
 						</select>
 					</label>
-
 					<label> <h3>Status:</h3>
-						<select name="status" style="width: 150px;">
-							<option> To Do </option>
-							<option> Doing </option>
-							<option> Done </option>
-							<option> Cancelled </option>
+						<select name="status" id="status">
+							<option value="0"> To Do </option>
+							<option value="1"> Doing </option>
+							<option value="2"> Done </option>
+							<option value="3"> Cancelled </option>
 						</select>
 					</label>
 			
             <input value="Ändern" type="button" class="button" onclick='javascript:aendernSelected()'>
-            <input value="Löschen" type="button" class="button" onclick='javascript:deleteSelected()'>
+            <input value="Eintrag Löschen" type="button" class="button" onclick='javascript:removeFromList()'>
             <input value="Alle 'Cancelled' löschen" class="button buttonRed" type="button" onclick='javascript:deleteConceld()'>
             <input value="Alle 'Done' löschen" class="button buttonRed" type="button" onclick='javascript:deleteDone()'>
-            <input value="Ganze Liste löschen" class="button buttonRed" type="button" onclick='javascript:clearList()'>
+            <input value="Liste löschen" class="button buttonRed" type="button" onclick='javascript:clearList()'>
 			</div>
 			
 			<div id="wrapper">
@@ -126,9 +138,6 @@
 			<div>
 			<input value="Drucken" type="button" class="button" onclick='javascript:printList()'>
 			</div>
-			
-			
-			
             </form>
         </body>
         </html>

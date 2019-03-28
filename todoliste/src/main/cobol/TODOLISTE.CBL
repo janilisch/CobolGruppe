@@ -27,12 +27,12 @@
           10  WS-CURRENT-YEAR         PIC 9(04).
           10  WS-CURRENT-MONTH        PIC 9(02).
           10  WS-CURRENT-DAY          PIC 9(02).
-        05  ITEM-TO-DELETE          PIC 999.
+        05  ITEM-TO-DELETE          PIC 9(5) VALUE 00002.
         05  NUMBER-OF-TODOS         PIC 999.
            88 LIST-IS-EMPTY VALUE ZERO.
         05  COUNTER                 PIC 999.
         05  TODOLISTE.
-            07  TODO-ITEM PIC X(35) OCCURS 999.
+            07  TODO-ITEM PIC X(64) OCCURS 999.
         05 FONTCOLOR                   PIC X(6).
         05 STATUS-STRING               PIC X(6).
         01 WS-EOF PIC A(1).
@@ -59,19 +59,24 @@
         COPY todoactions.
         COPY todoitem.
        PROCEDURE DIVISION USING TODO-ACTION NEW-TODO-ITEM.
-           EVALUATE TRUE
+		   EVALUATE TRUE
            WHEN ACTION-SHOW
               PERFORM READ-TODOLIST-FROM-FILE
            WHEN ACTION-ADD
               PERFORM ADD-NEW-TODO-ITEM
            WHEN ACTION-DELETE
               PERFORM CLEAR-LIST
-           END-EVALUATE
+           WHEN ACTION-DELETE-SPE
+		      PERFORM DELETE-ITEM
+		   WHEN OTHER 
+		      DISPLAY "Unbekannte Funktion: " TODO-ACTION
+		   END-EVALUATE
            GOBACK
           .
 
        ADD-NEW-TODO-ITEM SECTION.
-           OPEN INPUT TDLIST
+           DISPLAY "Hallo"
+		   OPEN INPUT TDLIST
              PERFORM UNTIL WS-EOF='Y'
                  READ TDLIST INTO WS-TDLIST
                     AT END MOVE 'Y' TO WS-EOF
@@ -119,8 +124,8 @@
           DISPLAY "<li style=""color: " FONTCOLOR """>"
                     "<label>"
                     "<input type = ""checkbox"" "
-                    "name = ""todo"" "
-                    "id = "" " ITEM-ID IN WS-TDLIST " "">"
+                    "name = ""checkbox"" "
+                    "id = """ ITEM-ID IN WS-TDLIST """>"
                     STATUS-STRING " "
       	            ITEM-DATE IN WS-TDLIST(7:2) "."
                     ITEM-DATE IN WS-TDLIST(5:2) ", "
@@ -128,16 +133,33 @@
                     ITEM-DATE IN WS-TDLIST(11:2) " "
                     ITEM-CONTENT IN WS-TDLIST "</li> </label>"
           EXIT.
-
+       TD-TO-RAM SECTION.
+           OPEN INPUT TDLIST
+             PERFORM UNTIL WS-EOF="Y"
+				 READ TDLIST INTO WS-TDLIST
+                    AT END MOVE "Y" TO WS-EOF
+                    NOT AT END PERFORM MOVE-TODO-ITEM
+				 END-READ
+             END-PERFORM
+           CLOSE TDLIST
+		   EXIT.
        DELETE-ITEM SECTION.
-           MOVE SPACES TO TODO-ITEM (ITEM-TO-DELETE)
-           PERFORM WITH TEST AFTER
-             VARYING COUNTER FROM ITEM-TO-DELETE BY 1 UNTIL
-                  COUNTER = NUMBER-OF-TODOS
-                MOVE TODO-ITEM(COUNTER + 1)
-                  TO TODO-ITEM(COUNTER)
-           END-PERFORM
+	       PERFORM TD-TO-RAM
+		   OPEN OUTPUT TDLIST
+		   PERFORM VARYING COUNTER FROM 1
+                 BY 1 UNTIL COUNTER>NUMBER-OF-TODOS
+              IF NOT TODO-ITEM(COUNTER)(1:5)=ITEM-TO-DELETE
+                  MOVE TODO-ITEM(COUNTER) TO WS-TDLIST
+                  WRITE TDLIST-FILE FROM WS-TDLIST
+              END-IF
+		   END-PERFORM
+           CLOSE TDLIST
           EXIT.
+	   MOVE-TODO-ITEM SECTION.
+	         ADD 1 TO NUMBER-OF-TODOS
+			 MOVE WS-TDLIST
+				  TO TODO-ITEM(NUMBER-OF-TODOS)
+		   EXIT.
        READ-TODOLIST-FROM-FILE SECTION.
              OPEN INPUT TDLIST
              DISPLAY "<ul>"
