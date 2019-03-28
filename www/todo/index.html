@@ -40,6 +40,15 @@
         initXmlRequests();
         self.xmlHttpReq.send("action=delete\n");
     }
+	function printList() {
+	    var printContent = document.getElementById("result");
+	    var WinPrint = window.open('','','left = 0, top=0, width=800,height=900,toolbar=0,scrollbars=0,status=0!');
+        WinPrint.document.write(printContent.innerHTML);
+	    WinPrint.document.close();
+        WinPrint.focus();
+	    WinPrint.print();
+	    WinPrint.close();
+	}
 
     function updatepage(str){
         document.getElementById("result").innerHTML = str;
@@ -55,9 +64,10 @@
             <h2>Todo hinzuf&uuml;gen: </h2>
 			<div align="center">
 				<input name="content" type="text" text="50" placeholder="ToDo hier eingeben" >
+				<input value="Eintragen" type="button" class="button" onclick='javascript:addToTodolist()'>
 			</div>
-			<div align="right">
-					<label> Farbe
+			<div align="left">
+					<label> <h3>Farbe</h3>
 						<select name="color" style="width: 150px;">
 							<option> Schwarz </option>
 							<option> Rot </option>
@@ -66,10 +76,7 @@
 							<option> Orange </option>
 						</select>
 					</label>
-                <input value="Eintragen" type="button" class="button" onclick='javascript:addToTodolist()'>
-			</div>
-			<div align="right">
-					<label> Status
+					<label> <h3>Status</h3>
 						<select name="color" style="width: 150px;">
 							<option> To Do </option>
 							<option> Doing </option>
@@ -80,17 +87,17 @@
 			
             <input value="Ändern" type="button" class="button">
             <input value="Löschen" type="button" class="button">
+            <input value="Alle 'Cancelled' löschen" class="button buttonRed" type="button">
+            <input value="Alle 'Done' löschen" class="button buttonRed" type="button">
+            <input value="Ganze Liste löschen" class="button buttonRed" type="button" onclick='javascript:clearList()'>
 			</div>
 			
+			<div id="wrapper">
             <div id="result" class="colorbox"></div>
-			<div align="left">
-            <input value="Alle 'Canceld' löschen" class="button buttonRed" type="button">
 			</div>
-			<div align="left">
-            <input value="Alle 'Done' löschen" class="button buttonRed" type="button">
-			</div>
-			<div align="left">
-            <input value="Ganze Liste löschen" class="button buttonRed" type="button" onclick='javascript:clearList()'>
+			
+			<div>
+			<input value="Drucken" type="button" class="button" onclick='javascript:printList()'>
 			</div>
             </form>
         </body>
