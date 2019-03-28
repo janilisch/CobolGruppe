@@ -1,6 +1,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" type="text/css" href="mystyle.css">
     <script type="text/javascript">
     function initXmlRequests() {
         var xmlHttpReq = false;
@@ -48,12 +49,16 @@
     <title>ToDo Liste in COBOL</title>
 </head>
 <body>
-    Eine ToDo Liste in COBOL<br><p>
+    <h1>Eine ToDo Liste in COBOL</h1><br>
+	
         <form name="f1">
-            <p>Todo hinzuf&uuml;gen: 
-				<input name="content" type="text" text="50">
+            <h2>Todo hinzuf&uuml;gen: </h2>
+			<div align="center">
+				<input name="content" type="text" text="50" placeholder="ToDo hier eingeben" >
+			</div>
+			<div align="right">
 					<label> Farbe
-						<select name="color">
+						<select name="color" style="width: 150px;">
 							<option> Schwarz </option>
 							<option> Rot </option>
 							<option> Blau </option>
@@ -61,24 +66,32 @@
 							<option> Orange </option>
 						</select>
 					</label>
-                <input value="Eintragen" type="button" onclick='javascript:addToTodolist()'>
-			</p>
-			
+                <input value="Eintragen" type="button" class="button" onclick='javascript:addToTodolist()'>
+			</div>
+			<div align="right">
 					<label> Status
-						<select name="color">
+						<select name="color" style="width: 150px;">
 							<option> To Do </option>
 							<option> Doing </option>
 							<option> Done </option>
 							<option> Cancelled </option>
 						</select>
 					</label>
-            <input value="Ändern" type="button">
-            <input value="Löschen" type="button">
-			</p>
-            <div id="result"></div>
-            <input value="Alle 'Canceld' löschen" type="button">
-            <input value="Alle 'Done' löschen" type="button">
-            <input value="Ganze Liste löschen" type="button" onclick='javascript:clearList()'>
+			
+            <input value="Ändern" type="button" class="button">
+            <input value="Löschen" type="button" class="button">
+			</div>
+			
+            <div id="result" class="colorbox"></div>
+			<div align="left">
+            <input value="Alle 'Canceld' löschen" class="button buttonRed" type="button">
+			</div>
+			<div align="left">
+            <input value="Alle 'Done' löschen" class="button buttonRed" type="button">
+			</div>
+			<div align="left">
+            <input value="Ganze Liste löschen" class="button buttonRed" type="button" onclick='javascript:clearList()'>
+			</div>
             </form>
         </body>
         </html>
