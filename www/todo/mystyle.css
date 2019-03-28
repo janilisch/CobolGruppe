@@ -13,6 +13,14 @@ h2	{
 	font-family:verdana;
 	font-size:20px;
 }
+
+h3	{
+	color: white;
+	font-family:verdana;
+	font-size:20px;
+	display: inline;
+}
+
 .button {
   background-color: #008CBA; /* Blue */
   border: none;
@@ -26,7 +34,9 @@ h2	{
   cursor: pointer;
 }
 
-.buttonRed {background-color: #f44336;} /* Red */ 
+.buttonRed {
+	background-color: #f44336; /* Red */
+	float: right;} 
 
 input[type=text], select {
   width: 25%;
@@ -40,7 +50,23 @@ input[type=text], select {
 
 .colorbox {
   background: white;
-} 
+  font-family:verdana;
+  display: inline-block;
+  padding: 20px;
+  border-radius: 25px;
+  text-align: left;
+}
+
+div:empty {
+	display: none;
+}
+
+#wrapper {
+	text-align:center;
+	
+}
+
+
 
 .dropdown {
   position: relative;
