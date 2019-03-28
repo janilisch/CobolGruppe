@@ -15,6 +15,7 @@
        WORKING-STORAGE SECTION.
        01 IN-STATUS            PIC 9999.
        01 NEWLINE              PIC X     VALUE X'0A'.
+	   01 IDS                  PIC 9(100)
        COPY todoactions.
        COPY cgiutildata.
 
@@ -32,6 +33,8 @@
              PERFORM SHOW-TODOLIST
            WHEN ACTION-DELETE
              PERFORM DELETE-TODOLIST
+		   WHEN ACTION-REMOVE
+		     PERFORM REMOVE-SELECTED
            WHEN OTHER
              DISPLAY "Action unbekannt: " TODO-ACTION
            END-EVALUATE
@@ -74,4 +77,8 @@
        DELETE-TODOLIST SECTION.
           CALL "TODOLISTE" USING TODO-ACTION
           EXIT.
+       REMOVE-SELECTED SECTION.
+          MOVE "ids" TO PARAMETER-NAME
+		  PERFORM READ-PARAMETER-VALUE
+		  EXIT.
        END PROGRAM TODOHANDLER.

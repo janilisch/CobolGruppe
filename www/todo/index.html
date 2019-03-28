@@ -65,16 +65,32 @@
 		}
 		return ids;
 	}
+	function selectedColor(){
+		var colorSelect = document.getElementById("color")
+		return colorSelect.options[colorSelect.selectedIndex].value;
+		
+	}
+	function selectedStatus(){
+		var statusSelect = document.getElementById("status")
+		return statusSelect.options[statusSelect.selectedIndex].value;
+	}
     function updatepage(str){
         document.getElementById("result").innerHTML = str;
     }
 	
 	function aendernSelected(){
-		alert(checkCheckboxesArray());
+		alert("selectedToDos: "+checkCheckboxesArray());
+		alert("selectedColor: "+selectedColor());
+		alert("selectedStatus: "+selectedStatus());
 	}
 	function deleteSelected(){
+		initXmlRequests();
+		qstr = 'ids=' + checkCheckboxesArray();
+		qstr = qstr + "&action=remove\n"
+		self.xmlHttpReq.send(qstr);
+		showTodoList();
 	}
-	function deleteConceld(){
+	function deleteCanceld(){
 	}
 	function deleteDone(){
 	}
@@ -112,7 +128,7 @@
 			
             <input value="Ändern" type="button" class="button" onclick='javascript:aendernSelected()'>
             <input value="Löschen" type="button" class="button" onclick='javascript:deleteSelected()'>
-            <input value="Alle 'Cancelled' löschen" class="button buttonRed" type="button" onclick='javascript:deleteConceld()'>
+            <input value="Alle 'Cancelled' löschen" class="button buttonRed" type="button" onclick='javascript:deleteCanceld()'>
             <input value="Alle 'Done' löschen" class="button buttonRed" type="button" onclick='javascript:deleteDone()'>
             <input value="Ganze Liste löschen" class="button buttonRed" type="button" onclick='javascript:clearList()'>
 			</div>
