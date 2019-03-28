@@ -24,13 +24,17 @@
         }
     }
     function addToTodolist() {
-        initXmlRequests();
-        var form = document.forms['f1'];
-        var word = form.content.value;
-        qstr = 'content=' + escape(word);  // NOTE: no '?' before querystring
-        qstr = qstr + "&action=add\n"
-        self.xmlHttpReq.send(qstr);
-        showTodoList();
+		var word = document.getElementById("content").value;
+		if(word == ""){
+			alert("Bitte trage zuerst einen Text ein");
+		} else {
+			initXmlRequests();
+			qstr = 'content=' + escape(word);  // NOTE: no '?' before querystring
+			qstr = qstr + "&action=add\n"
+			self.xmlHttpReq.send(qstr);
+			document.getElementById("content").value = "";
+			showTodoList();
+		}
     }
     function showTodoList() {
         initXmlRequests();
@@ -49,10 +53,44 @@
 	    WinPrint.print();
 	    WinPrint.close();
 	}
-
+	function checkCheckboxesArray(){
+		var checkboxes = document.getElementsByName("checkbox");
+		var ids = "";
+		// loop over them all
+		for (var i=0; i<checkboxes.length; i++) {
+			// And stick the checked ones onto an array...
+			if (checkboxes[i].checked) {
+				ids = ids + checkboxes[i].id;
+			}
+		}
+		return ids;
+	}
+	function selectedColor(){
+		var colorSelect = document.getElementById("color")
+		return colorSelect.options[colorSelect.selectedIndex].value;
+		
+	}
+	function selectedStatus(){
+		var statusSelect = document.getElementById("status")
+		return statusSelect.options[statusSelect.selectedIndex].value;
+	}
+	
+	
     function updatepage(str){
         document.getElementById("result").innerHTML = str;
     }
+	
+	function aendernSelected(){
+		alert("selectedToDos: "+checkCheckboxesArray());
+		alert("selectedColor: "+selectedColor());
+		alert("selectedStatus: "+selectedStatus());
+	}
+	function deleteSelected(){
+	}
+	function deleteConceld(){
+	}
+	function deleteDone(){
+	}
     window.onload = showTodoList;
     </script>
     <title>ToDo Liste in COBOL</title>
@@ -63,32 +101,32 @@
         <form name="f1">
             <h2>Todo hinzuf&uuml;gen: </h2>
 			<div align="center">
-				<input name="content" type="text" text="50" placeholder="ToDo hier eingeben" >
+				<input name="content" id="content" type="text" text="50" placeholder="ToDo hier eingeben" >
 				<input value="Eintragen" type="button" class="button" onclick='javascript:addToTodolist()'>
 			</div>
 			<div align="left">
 					<label> <h3>Farbe</h3>
-						<select name="color" style="width: 150px;">
-							<option> Schwarz </option>
-							<option> Rot </option>
-							<option> Blau </option>
-							<option> Grün </option>
-							<option> Orange </option>
+						<select name="color" id="color" style="width: 150px;">
+							<option value="0"> Schwarz </option>
+							<option value="1"> Blau </option>
+							<option value="2"> Rot </option>
+							<option value="3"> Grün </option>
+							<option value="4"> Orange </option>
 						</select>
 					</label>
 					<label> <h3>Status</h3>
-						<select name="color" style="width: 150px;">
-							<option> To Do </option>
-							<option> Doing </option>
-							<option> Done </option>
-							<option> Cancelled </option>
+						<select name="status" id="status" style="width: 150px;">
+							<option value="0"> To Do </option>
+							<option value="1"> Doing </option>
+							<option value="2"> Done </option>
+							<option value="3"> Cancelled </option>
 						</select>
 					</label>
 			
-            <input value="Ändern" type="button" class="button">
-            <input value="Löschen" type="button" class="button">
-            <input value="Alle 'Cancelled' löschen" class="button buttonRed" type="button">
-            <input value="Alle 'Done' löschen" class="button buttonRed" type="button">
+            <input value="Ändern" type="button" class="button" onclick='javascript:aendernSelected()'>
+            <input value="Löschen" type="button" class="button" onclick='javascript:deleteSelected()'>
+            <input value="Alle 'Cancelled' löschen" class="button buttonRed" type="button" onclick='javascript:deleteConceld()'>
+            <input value="Alle 'Done' löschen" class="button buttonRed" type="button" onclick='javascript:deleteDone()'>
             <input value="Ganze Liste löschen" class="button buttonRed" type="button" onclick='javascript:clearList()'>
 			</div>
 			
