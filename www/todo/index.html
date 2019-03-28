@@ -2,6 +2,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" type="text/css" href="mystyle.css">
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <script type="text/javascript">
     function initXmlRequests() {
         var xmlHttpReq = false;
@@ -66,9 +67,10 @@
 				<input name="content" type="text" text="50" placeholder="ToDo hier eingeben" >
 				<input value="Eintragen" type="button" class="button" onclick='javascript:addToTodolist()'>
 			</div>
+					
 			<div align="left">
-					<label> <h3>Farbe</h3>
-						<select name="color" style="width: 150px;">
+			<label> <h3>Farbe:</h3>
+						<select name="color">
 							<option> Schwarz </option>
 							<option> Rot </option>
 							<option> Blau </option>
@@ -76,8 +78,8 @@
 							<option> Orange </option>
 						</select>
 					</label>
-					<label> <h3>Status</h3>
-						<select name="color" style="width: 150px;">
+					<label> <h3>Status:</h3>
+						<select name="color" class="selectBox">
 							<option> To Do </option>
 							<option> Doing </option>
 							<option> Done </option>
@@ -93,12 +95,15 @@
 			</div>
 			
 			<div id="wrapper">
-            <div id="result" class="colorbox"></div>
+				<div id="result" class="colorbox"></div>
+				
 			</div>
-			
 			<div>
 			<input value="Drucken" type="button" class="button" onclick='javascript:printList()'>
 			</div>
+			
+			
+			
             </form>
         </body>
         </html>
