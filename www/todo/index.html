@@ -49,6 +49,16 @@
 	    WinPrint.print();
 	    WinPrint.close();
 	}
+    function removeFromList() {
+        initXmlRequests();
+        var form = document.forms['f1'];
+        var word = form.content.value;
+        qstr = 'content=' + escape(word);  // NOTE: no '?' before querystring
+        qstr = qstr + "&action=delete-spe\n"
+        self.xmlHttpReq.send(qstr);
+        showTodoList();
+    }
+>>>>>>> remove-item
 
     function updatepage(str){
         document.getElementById("result").innerHTML = str;
@@ -61,6 +71,7 @@
     <h1>Eine ToDo Liste in COBOL</h1><br>
 	
         <form name="f1">
+<<<<<<< HEAD
             <h2>Todo hinzuf&uuml;gen: </h2>
 			<div align="center">
 				<input name="content" type="text" text="50" placeholder="ToDo hier eingeben" >
@@ -99,6 +110,13 @@
 			<div>
 			<input value="Drucken" type="button" class="button" onclick='javascript:printList()'>
 			</div>
+=======
+            <p>Todo hinzuf&uuml;gen: <input name="content" type="text" text="50">
+                <input value="Eintragen" type="button" onclick='javascript:addToTodolist()'></p>
+                <input value="Liste löschen" type="button" onclick='javascript:clearList()'>
+				<input value="Eintrag löschen" type="button" onclick='javascript:removeFromList()'></p>
+                <div id="result"></div>
+>>>>>>> remove-item
             </form>
         </body>
         </html>
