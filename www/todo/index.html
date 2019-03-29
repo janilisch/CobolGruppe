@@ -95,8 +95,16 @@
 		showTodoList();
 	}
 	function deleteConceld(){
+		initXmlRequests();
+		qstr = qstr + "&action=remove-cancled\n"
+		self.xmlHttpReq.send(qstr);
+		showTodoList();
 	}
 	function deleteDone(){
+		initXmlRequests();
+		qstr = qstr + "&action=remove-done\n"
+		self.xmlHttpReq.send(qstr);
+		showTodoList();
 	}
     window.onload = showTodoList;
     </script>
@@ -144,11 +152,6 @@
 			<div>
 			<input value="Drucken" type="button" class="button" onclick='javascript:printList()'>
 			</div>
-            <p>Todo hinzuf&uuml;gen: <input name="content" type="text" text="50">
-                <input value="Eintragen" type="button" onclick='javascript:addToTodolist()'></p>
-                <input value="Liste löschen" type="button" onclick='javascript:clearList()'>
-				<input value="Eintrag löschen" type="button" onclick='javascript:removeFromList()'></p>
-                <div id="result"></div>
             </form>
         </body>
         </html>
