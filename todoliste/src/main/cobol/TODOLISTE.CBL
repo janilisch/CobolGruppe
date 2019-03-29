@@ -82,7 +82,7 @@
 
        ADD-NEW-TODO-ITEM SECTION.
            DISPLAY "Hallo"
-		   OPEN INPUT TDLIST
+		       OPEN INPUT TDLIST
              PERFORM UNTIL WS-EOF='Y'
                  READ TDLIST INTO WS-TDLIST
                     AT END MOVE 'Y' TO WS-EOF
@@ -95,7 +95,9 @@
            ADD 1 TO ITEM-ID IN WS-TDLIST
            MOVE NEW-TODO-ITEM
              TO ITEM-CONTENT IN WS-TDLIST
-           MOVE IT-COLOR   TO ITEM-COLOR IN WS-TDLIST
+           IF IT-COLOR<5
+             MOVE IT-COLOR   TO ITEM-COLOR IN WS-TDLIST
+           END-IF
            OPEN EXTEND TDLIST
            WRITE TDLIST-FILE FROM WS-TDLIST
            CLOSE TDLIST
@@ -127,16 +129,18 @@
               WHEN CANCELED MOVE "Canceled" TO STATUS-STRING
           END-EVALUATE
           DISPLAY "<li style=""color: " FONTCOLOR """>"
-                    "<label>"
+            "<label class=""container"">"
                     "<input type = ""checkbox"" "
                     "name = ""checkbox"" "
-                    "id = """ ITEM-ID IN WS-TDLIST """>"
+                    "id = """ ITEM-ID IN WS-TDLIST 
+                    """><span class=""checkmark""></span></label>"
+                    "<label for=""" ITEM-ID IN WS-TDLIST """>"
                     STATUS-STRING " "
       	            ITEM-DATE IN WS-TDLIST(7:2) "."
                     ITEM-DATE IN WS-TDLIST(5:2) ", "
                     ITEM-DATE IN WS-TDLIST(9:2) ":"
                     ITEM-DATE IN WS-TDLIST(11:2) " "
-                    ITEM-CONTENT IN WS-TDLIST "</li> </label>"
+                    ITEM-CONTENT IN WS-TDLIST "</label></li> "
           EXIT.
        READ-TODOLIST-FROM-FILE SECTION.
           OPEN INPUT TDLIST
@@ -217,10 +221,14 @@
            END-PERFORM
            MOVE TODO-ITEM(COUNTER) TO WS-TDLIST
            IF WS-EOF="Y"
+             IF IT-COLOR<5
               MOVE IT-COLOR
               TO ITEM-COLOR IN WS-TDLIST
+             END-IF
+             IF IT-STATUS<5
               MOVE IT-STATUS
               TO ITEM-STATUS IN WS-TDLIST
+            END-IF
            END-IF
            WRITE TDLIST-FILE FROM WS-TDLIST
           END-PERFORM
