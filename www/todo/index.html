@@ -92,7 +92,7 @@
 		self.xmlHttpReq.send(qstr);
 		showTodoList();
 	}
-	function deleteSelected(){
+	function removeFromList(){
 		initXmlRequests();
 		qstr = 'ids=' + checkCheckboxesArray();
 		qstr = qstr + "&action=remove\n"

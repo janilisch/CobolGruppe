@@ -132,7 +132,7 @@
             "<label class=""container"">"
                     "<input type = ""checkbox"" "
                     "name = ""checkbox"" "
-                    "id = """ ITEM-ID IN WS-TDLIST 
+                    "id = """ ITEM-ID IN WS-TDLIST
                     """><span class=""checkmark""></span></label>"
                     "<label for=""" ITEM-ID IN WS-TDLIST """>"
                     STATUS-STRING " "
@@ -170,14 +170,14 @@
 		      PERFORM VARYING COUNTER FROM 1
                  BY 1 UNTIL COUNTER>NUMBER-OF-TODOS
             MOVE "A" TO WS-EOF
+            MOVE TODO-ITEM(COUNTER) TO WS-TDLIST
             PERFORM VARYING WS-ID-COUNTER FROM 1
                   BY 5 UNTIL WS-ID-COUNTER>99
-              IF TODO-ITEM(COUNTER)(1:5)=IT-IDS(WS-ID-COUNTER:5)
+              IF ITEM-ID IN WS-TDLIST=IT-IDS(WS-ID-COUNTER:5)
                 MOVE "Y" TO WS-EOF
               END-IF
             END-PERFORM
             IF WS-EOF="A"
-              MOVE TODO-ITEM(COUNTER) TO WS-TDLIST
               WRITE TDLIST-FILE FROM WS-TDLIST
             END-IF
 		      END-PERFORM
