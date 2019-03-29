@@ -121,11 +121,11 @@
               WHEN DONE MOVE "Done----" TO STATUS-STRING
               WHEN CANCELED MOVE "Canceled" TO STATUS-STRING
           END-EVALUATE
-          DISPLAY "<li style=""color: " FONTCOLOR """>"
-                    "<label>"
-                    "<input type = ""checkbox"" "
-                    "name = ""checkbox"" "
-                    "id = """ ITEM-ID IN WS-TDLIST """>"
+          DISPLAY '<li style=""color: ' FONTCOLOR '"">'
+                    '<label class=""container"">'
+                    '<input type = ""checkbox"" '
+                    'name = ""checkbox"" '
+                    'id = ""' ITEM-ID IN WS-TDLIST '"">'
                     STATUS-STRING " "
       	            ITEM-DATE IN WS-TDLIST(7:2) "."
                     ITEM-DATE IN WS-TDLIST(5:2) ", "
