@@ -30,16 +30,19 @@
 		} else {
 			initXmlRequests();
 			qstr = 'content=' + escape(word);  // NOTE: no '?' before querystring
-			qstr = qstr + "&action=add\n"
+			qstr = qstr + "&color=" +selectedColor() + "&action=add\n"
 			self.xmlHttpReq.send(qstr);
 			document.getElementById("content").value = "";
 			showTodoList();
 		}
     }
     function showTodoList() {
+		window.setTimeout(instantShowTodoList(),100);
+    }
+	function instantShowTodoList(){
         initXmlRequests();
         self.xmlHttpReq.send("action=show\n");
-    }
+	}
     function clearList() {
         initXmlRequests();
         self.xmlHttpReq.send("action=delete\n");
@@ -81,42 +84,66 @@
     }
 	
 	function aendernSelected(){
-		alert("selectedToDos: "+checkCheckboxesArray());
-		alert("selectedColor: "+selectedColor());
-		alert("selectedStatus: "+selectedStatus());
+		initXmlRequests();
+		qstr = 'ids=' + checkCheckboxesArray();
+		qstr = qstr + "&status=" + selectedStatus();
+		qstr = qstr + "&color=" + selectedColor();
+		qstr = qstr + "&action=change\n";
+		self.xmlHttpReq.send(qstr);
+		showTodoList();
 	}
 	function deleteSelected(){
+		initXmlRequests();
+		qstr = 'ids=' + checkCheckboxesArray();
+		qstr = qstr + "&action=remove\n"
+		self.xmlHttpReq.send(qstr);
+		showTodoList();
 	}
-	function deleteConceld(){
+	function deleteCanceled(){
+		initXmlRequests();
+		qstr = "action=remove-canceled\n"
+		self.xmlHttpReq.send(qstr);
+		showTodoList();
 	}
 	function deleteDone(){
+		initXmlRequests();
+		qstr = "action=remove-done\n"
+		self.xmlHttpReq.send(qstr);
+		showTodoList();
 	}
-    window.onload = showTodoList;
+	function onKeyPressHandle(e){
+		if (e.key  == "Enter"){
+			addToTodolist();
+	  }
+	}
+    window.onload = instantShowTodoList;
     </script>
     <title>ToDo Liste in COBOL</title>
 </head>
 <body>
     <h1>Eine ToDo Liste in COBOL</h1><br>
 	
-        <form name="f1">
+        <form name="f1" >
             <h2>Todo hinzuf&uuml;gen: </h2>
 			<div align="center">
-				<input name="content" id="content" type="text" text="50" placeholder="ToDo hier eingeben" >
+				<input name="content" id="content" type="text" text="50" placeholder="ToDo hier eingeben"  onkeypress="onKeyPressHandle(event)">
 				<input value="Eintragen" type="button" class="button" onclick='javascript:addToTodolist()'>
 			</div>
 					
 			<div align="left">
 					<label> <h3>Farbe:</h3>
 						<select name="color" id="color">
+							<option value="5"> ----- </option>
 							<option value="0"> Schwarz </option>
 							<option value="1"> Blau </option>
 							<option value="2"> Rot </option>
 							<option value="3"> Grün </option>
-							<option value="4"> Orange </option>
+							<option value="4> Orange </option>
 						</select>
 					</label>
 					<label> <h3>Status:</h3>
 						<select name="status" id="status">
+							<option value="5"> ----- </option>
 							<option value="0"> To Do </option>
 							<option value="1"> Doing </option>
 							<option value="2"> Done </option>
@@ -126,7 +153,7 @@
 			
             <input value="Ändern" type="button" class="button" onclick='javascript:aendernSelected()'>
             <input value="Eintrag Löschen" type="button" class="button" onclick='javascript:removeFromList()'>
-            <input value="Alle 'Canceled' löschen" class="button buttonRed" type="button" onclick='javascript:deleteConceld()'>
+            <input value="Alle 'Canceled' löschen" class="button buttonRed" type="button" onclick='javascript:deleteCanceled()'>
             <input value="Alle 'Done' löschen" class="button buttonRed" type="button" onclick='javascript:deleteDone()'>
             <input value="Liste löschen" class="button buttonRed" type="button" onclick='javascript:clearList()'>
 			</div>

@@ -15,12 +15,13 @@
        WORKING-STORAGE SECTION.
        01 IN-STATUS            PIC 9999.
        01 NEWLINE              PIC X     VALUE X'0A'.
-       COPY todoactions.
+	     COPY todoactions.
        COPY cgiutildata.
+       COPY todoitem.
 
        PROCEDURE DIVISION.
            PERFORM U01-PRINT-HEADER
-           
+
            PERFORM U00-PARSE-WEBINPUT
 
            PERFORM READ-TODOLIST-ACTION
@@ -29,13 +30,19 @@
            WHEN ACTION-ADD
              PERFORM ADD-TODOLIST-ENTRY
            WHEN ACTION-SHOW
-             PERFORM SHOW-TODOLIST
+             PERFORM CALL-TODOLISTE
            WHEN ACTION-DELETE
-             PERFORM DELETE-TODOLIST
-		   WHEN ACTION-DELETE-SPE
-		     PERFORM DELETE-SPECIFIC
+             PERFORM CALL-TODOLISTE
+		       WHEN ACTION-REMOVE
+		          PERFORM REMOVE-SELECTED
+           WHEN ACTION-CHANGE
+              PERFORM CHANGE-SELECTED
+           WHEN ACTION-REMOVE-DONE
+              PERFORM CALL-TODOLISTE
+           WHEN ACTION-REMOVE-CANCELED
+              PERFORM CALL-TODOLISTE
            WHEN OTHER
-             DISPLAY "Action unbekannt: " TODO-ACTION
+              DISPLAY "Action unbekannt: " TODO-ACTION
            END-EVALUATE
            GOBACK
           .
@@ -63,18 +70,41 @@
            MOVE "action" TO PARAMETER-NAME
            PERFORM READ-PARAMETER-VALUE
            MOVE PARAMETER-VALUE TO TODO-ACTION
-          EXIT.
+           EXIT.
        ADD-TODOLIST-ENTRY SECTION.
            MOVE "content" TO PARAMETER-NAME
            PERFORM READ-PARAMETER-VALUE
-           CALL "TODOLISTE" USING TODO-ACTION
-                                  PARAMETER-VALUE
+           MOVE PARAMETER-VALUE
+              TO NEW-TODO-ITEM
+           MOVE "color" TO PARAMETER-NAME
+           PERFORM READ-PARAMETER-VALUE
+           MOVE PARAMETER-VALUE TO IT-COLOR
+           PERFORM CALL-TODOLISTE
           EXIT.
-       SHOW-TODOLIST SECTION.
-          CALL "TODOLISTE" USING TODO-ACTION
+       REMOVE-SELECTED SECTION.
+          MOVE "ids" TO PARAMETER-NAME
+		      PERFORM READ-PARAMETER-VALUE
+          MOVE PARAMETER-VALUE TO IT-IDS
+          PERFORM CALL-TODOLISTE
           EXIT.
-       DELETE-TODOLIST SECTION.
+       CHANGE-SELECTED SECTION.
+          MOVE "ids" TO PARAMETER-NAME
+          PERFORM READ-PARAMETER-VALUE
+          MOVE PARAMETER-VALUE TO IT-IDS
+          MOVE "color" TO PARAMETER-NAME
+          PERFORM READ-PARAMETER-VALUE
+          MOVE PARAMETER-VALUE TO IT-COLOR
+          MOVE "status" TO PARAMETER-NAME
+          PERFORM READ-PARAMETER-VALUE
+          MOVE PARAMETER-VALUE TO IT-STATUS
+          PERFORM CALL-TODOLISTE
+          EXIT.
+       CALL-TODOLISTE SECTION.
           CALL "TODOLISTE" USING TODO-ACTION
+                                 NEW-TODO-ITEM
+                                 IT-IDS
+                                 IT-COLOR
+                                 IT-STATUS
           EXIT.
 	   DELETE-SPECIFIC SECTION.
 	      DISPLAY "Hallo"
