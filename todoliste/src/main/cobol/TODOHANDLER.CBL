@@ -15,13 +15,13 @@
        WORKING-STORAGE SECTION.
        01 IN-STATUS            PIC 9999.
        01 NEWLINE              PIC X     VALUE X'0A'.
-	   01 IDS                  PIC 9(100)
-       COPY todoactions.
+	     COPY todoactions.
        COPY cgiutildata.
+       COPY todoitem.
 
        PROCEDURE DIVISION.
            PERFORM U01-PRINT-HEADER
-           
+
            PERFORM U00-PARSE-WEBINPUT
 
            PERFORM READ-TODOLIST-ACTION
@@ -33,10 +33,12 @@
              PERFORM SHOW-TODOLIST
            WHEN ACTION-DELETE
              PERFORM DELETE-TODOLIST
-		   WHEN ACTION-REMOVE
-		     PERFORM REMOVE-SELECTED
+		       WHEN ACTION-REMOVE
+		          PERFORM REMOVE-SELECTED
+           WHEN ACTION-CHANGE
+              PERFORM CHANGE-SELECTED
            WHEN OTHER
-             DISPLAY "Action unbekannt: " TODO-ACTION
+              DISPLAY "Action unbekannt: " TODO-ACTION
            END-EVALUATE
            GOBACK
           .
@@ -64,21 +66,43 @@
            MOVE "action" TO PARAMETER-NAME
            PERFORM READ-PARAMETER-VALUE
            MOVE PARAMETER-VALUE TO TODO-ACTION
-          EXIT.
+           EXIT.
        ADD-TODOLIST-ENTRY SECTION.
            MOVE "content" TO PARAMETER-NAME
            PERFORM READ-PARAMETER-VALUE
-           CALL "TODOLISTE" USING TODO-ACTION
-                                  PARAMETER-VALUE
+           MOVE PARAMETER-VALUE
+              TO NEW-TODO-ITEM
+           PERFORM CALL-TODOLISTE
           EXIT.
        SHOW-TODOLIST SECTION.
-          CALL "TODOLISTE" USING TODO-ACTION
+          PERFORM CALL-TODOLISTE
           EXIT.
        DELETE-TODOLIST SECTION.
-          CALL "TODOLISTE" USING TODO-ACTION
+          PERFORM CALL-TODOLISTE
           EXIT.
        REMOVE-SELECTED SECTION.
           MOVE "ids" TO PARAMETER-NAME
-		  PERFORM READ-PARAMETER-VALUE
-		  EXIT.
+		      PERFORM READ-PARAMETER-VALUE
+          MOVE PARAMETER-VALUE TO IT-IDS
+          PERFORM CALL-TODOLISTE
+          EXIT.
+       CHANGE-SELECTED SECTION.
+          MOVE "ids" TO PARAMETER-NAME
+          PERFORM READ-PARAMETER-VALUE
+          MOVE PARAMETER-VALUE TO IT-IDS
+          MOVE "color" TO PARAMETER-NAME
+          PERFORM READ-PARAMETER-VALUE
+          MOVE PARAMETER-VALUE TO IT-COLOR
+          MOVE "status" TO PARAMETER-NAME
+          PERFORM READ-PARAMETER-VALUE
+          MOVE PARAMETER-VALUE TO IT-STATUS
+          PERFORM CALL-TODOLISTE
+          EXIT.
+       CALL-TODOLISTE SECTION.
+          CALL "TODOLISTE" USING TODO-ACTION
+                                 NEW-TODO-ITEM
+                                 IT-IDS
+                                 IT-COLOR
+                                 IT-STATUS
+          EXIT.
        END PROGRAM TODOHANDLER.

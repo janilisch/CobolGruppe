@@ -32,10 +32,11 @@
            88 LIST-IS-EMPTY VALUE ZERO.
         05  COUNTER                 PIC 999.
         05  TODOLISTE.
-            07  TODO-ITEM PIC X(35) OCCURS 999.
+            07  TODO-ITEM PIC X(64) OCCURS 999.
         05 FONTCOLOR                   PIC X(6).
         05 STATUS-STRING               PIC X(6).
         01 WS-EOF PIC A(1).
+        01 WS-ID-COUNTER PIC 999.
         01 WS-TDLIST.
            05 ITEM-ID PIC 9(5).
            05 ITEM-CONTENT PIC X(35).
@@ -58,7 +59,8 @@
        LINKAGE SECTION.
         COPY todoactions.
         COPY todoitem.
-       PROCEDURE DIVISION USING TODO-ACTION NEW-TODO-ITEM.
+       PROCEDURE DIVISION USING TODO-ACTION NEW-TODO-ITEM
+          IT-IDS IT-COLOR IT-STATUS.
            EVALUATE TRUE
            WHEN ACTION-SHOW
               PERFORM READ-TODOLIST-FROM-FILE
@@ -66,6 +68,10 @@
               PERFORM ADD-NEW-TODO-ITEM
            WHEN ACTION-DELETE
               PERFORM CLEAR-LIST
+           WHEN ACTION-REMOVE
+              PERFORM DELETE-ITEMS
+           WHEN ACTION-CHANGE
+              PERFORM CHANGE-ITEMS
            END-EVALUATE
            GOBACK
           .
@@ -79,17 +85,15 @@
                  END-READ
              END-PERFORM
            CLOSE TDLIST
-		   MOVE FUNCTION CURRENT-DATE TO ITEM-DATE IN WS-TDLIST
-           MOVE NEW-TODO-ITEM
-             TO TODO-ITEM (NUMBER-OF-TODOS)
+		       MOVE FUNCTION CURRENT-DATE TO ITEM-DATE
+               IN WS-TDLIST
            ADD 1 TO ITEM-ID IN WS-TDLIST
            MOVE NEW-TODO-ITEM
              TO ITEM-CONTENT IN WS-TDLIST
-
            OPEN EXTEND TDLIST
            WRITE TDLIST-FILE FROM WS-TDLIST
            CLOSE TDLIST
-
+           DISPLAY WS-TDLIST
           EXIT.
 
        CLEAR-LIST SECTION.
@@ -110,7 +114,7 @@
               WHEN ORANGE MOVE "orange" TO FONTCOLOR
               WHEN OTHER MOVE "black" TO FONTCOLOR
           END-EVALUATE
-		  EVALUATE TRUE
+		      EVALUATE TRUE
               WHEN TODO MOVE "ToDo----" TO STATUS-STRING
               WHEN DOING MOVE "Doing---" TO STATUS-STRING
               WHEN DONE MOVE "Done----" TO STATUS-STRING
@@ -129,17 +133,8 @@
                     ITEM-CONTENT IN WS-TDLIST "</li> </label>"
           EXIT.
 
-       DELETE-ITEM SECTION.
-           MOVE SPACES TO TODO-ITEM (ITEM-TO-DELETE)
-           PERFORM WITH TEST AFTER
-             VARYING COUNTER FROM ITEM-TO-DELETE BY 1 UNTIL
-                  COUNTER = NUMBER-OF-TODOS
-                MOVE TODO-ITEM(COUNTER + 1)
-                  TO TODO-ITEM(COUNTER)
-           END-PERFORM
-          EXIT.
        READ-TODOLIST-FROM-FILE SECTION.
-             OPEN INPUT TDLIST
+          OPEN INPUT TDLIST
              DISPLAY "<ul>"
              PERFORM UNTIL WS-EOF='Y'
                  READ TDLIST INTO WS-TDLIST
@@ -148,7 +143,64 @@
                  END-READ
              END-PERFORM
              DISPLAY "</ul>"
-             CLOSE TDLIST
+          CLOSE TDLIST
           EXIT.
+       TD-TO-RAM SECTION.
+           OPEN INPUT TDLIST
+             PERFORM UNTIL WS-EOF="Y"
+				        READ TDLIST INTO WS-TDLIST
+                    AT END MOVE "Y" TO WS-EOF
+                    NOT AT END PERFORM MOVE-TODO-ITEM
+				        END-READ
+             END-PERFORM
+           CLOSE TDLIST
+		      EXIT.
+       DELETE-ITEMS SECTION.
+	        PERFORM TD-TO-RAM
+		      OPEN OUTPUT TDLIST
+		      PERFORM VARYING COUNTER FROM 1
+                 BY 1 UNTIL COUNTER>NUMBER-OF-TODOS
+            MOVE "A" TO WS-EOF
+            PERFORM VARYING WS-ID-COUNTER FROM 1
+                  BY 5 UNTIL WS-ID-COUNTER>99
+              IF TODO-ITEM(COUNTER)(1:5)=IT-IDS(WS-ID-COUNTER:5)
+                MOVE "Y" TO WS-EOF
+              END-IF
+            END-PERFORM
+            IF WS-EOF="A"
+              MOVE TODO-ITEM(COUNTER) TO WS-TDLIST
+              WRITE TDLIST-FILE FROM WS-TDLIST
+            END-IF
+		      END-PERFORM
+          CLOSE TDLIST
+          EXIT.
+       CHANGE-ITEMS SECTION.
+          PERFORM TD-TO-RAM
+          OPEN OUTPUT TDLIST
+           PERFORM VARYING COUNTER FROM 1
+                BY 1 UNTIL COUNTER>NUMBER-OF-TODOS
+           MOVE "A" TO WS-EOF
+           PERFORM VARYING WS-ID-COUNTER FROM 1
+                BY 5 UNTIL WS-ID-COUNTER>99
+             IF TODO-ITEM(COUNTER)(1:5)=IT-IDS(WS-ID-COUNTER:5)
+               MOVE "Y" TO WS-EOF
+             END-IF
+           END-PERFORM
+           MOVE TODO-ITEM(COUNTER) TO WS-TDLIST
+           IF WS-EOF="Y"
+              MOVE IT-COLOR
+              TO ITEM-COLOR IN WS-TDLIST
+              MOVE IT-STATUS
+              TO ITEM-STATUS IN WS-TDLIST
+           END-IF
+           WRITE TDLIST-FILE FROM WS-TDLIST
+          END-PERFORM
+          CLOSE TDLIST
+          EXIT.
+	     MOVE-TODO-ITEM SECTION.
+	        ADD 1 TO NUMBER-OF-TODOS
+			    MOVE WS-TDLIST
+			    TO TODO-ITEM(NUMBER-OF-TODOS)
+		      EXIT.
 
        END PROGRAM TODOLISTE.
