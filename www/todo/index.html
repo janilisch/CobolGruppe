@@ -30,7 +30,6 @@
 		} else {
 			initXmlRequests();
 			qstr = 'content=' + escape(word);  // NOTE: no '?' before querystring
-			qstr = qstr + "&color=" + selectedColor();
 			qstr = qstr + "&action=add\n"
 			self.xmlHttpReq.send(qstr);
 			document.getElementById("content").value = "";
@@ -75,27 +74,20 @@
 		var statusSelect = document.getElementById("status")
 		return statusSelect.options[statusSelect.selectedIndex].value;
 	}
+	
+	
     function updatepage(str){
         document.getElementById("result").innerHTML = str;
     }
 	
 	function aendernSelected(){
-		initXmlRequests();
-		qstr = "ids=" + checkCheckboxesArray();
-		qstr = qstr + "color=" + selectedColor();
-		qstr = qstr + "&status=" + selectedStatus();
-		qstr = qstr + "&action=change\n"
-		self.xmlHttpReq.send(qstr);
-		showTodoList();
+		alert("selectedToDos: "+checkCheckboxesArray());
+		alert("selectedColor: "+selectedColor());
+		alert("selectedStatus: "+selectedStatus());
 	}
 	function deleteSelected(){
-		initXmlRequests();
-		qstr = 'ids=' + checkCheckboxesArray();
-		qstr = qstr + "&action=remove\n"
-		self.xmlHttpReq.send(qstr);
-		showTodoList();
 	}
-	function deleteCanceld(){
+	function deleteConceld(){
 	}
 	function deleteDone(){
 	}
@@ -114,26 +106,26 @@
 			</div>
 			<div align="left">
 					<label> <h3>Farbe</h3>
-						<select name="color" style="width: 150px;">
-							<option> Schwarz </option>
-							<option> Rot </option>
-							<option> Blau </option>
-							<option> Grün </option>
-							<option> Orange </option>
+						<select name="color" id="color" style="width: 150px;">
+							<option value="0"> Schwarz </option>
+							<option value="1"> Blau </option>
+							<option value="2"> Rot </option>
+							<option value="3"> Grün </option>
+							<option value="4"> Orange </option>
 						</select>
 					</label>
 					<label> <h3>Status</h3>
-						<select name="status" style="width: 150px;">
-							<option> To Do </option>
-							<option> Doing </option>
-							<option> Done </option>
-							<option> Cancelled </option>
+						<select name="status" id="status" style="width: 150px;">
+							<option value="0"> To Do </option>
+							<option value="1"> Doing </option>
+							<option value="2"> Done </option>
+							<option value="3"> Cancelled </option>
 						</select>
 					</label>
 			
             <input value="Ändern" type="button" class="button" onclick='javascript:aendernSelected()'>
             <input value="Löschen" type="button" class="button" onclick='javascript:deleteSelected()'>
-            <input value="Alle 'Cancelled' löschen" class="button buttonRed" type="button" onclick='javascript:deleteCanceld()'>
+            <input value="Alle 'Cancelled' löschen" class="button buttonRed" type="button" onclick='javascript:deleteConceld()'>
             <input value="Alle 'Done' löschen" class="button buttonRed" type="button" onclick='javascript:deleteDone()'>
             <input value="Ganze Liste löschen" class="button buttonRed" type="button" onclick='javascript:clearList()'>
 			</div>
@@ -145,6 +137,11 @@
 			<div>
 			<input value="Drucken" type="button" class="button" onclick='javascript:printList()'>
 			</div>
+            <p>Todo hinzuf&uuml;gen: <input name="content" type="text" text="50">
+                <input value="Eintragen" type="button" onclick='javascript:addToTodolist()'></p>
+                <input value="Liste löschen" type="button" onclick='javascript:clearList()'>
+				<input value="Eintrag löschen" type="button" onclick='javascript:removeFromList()'></p>
+                <div id="result"></div>
             </form>
         </body>
         </html>
