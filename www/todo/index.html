@@ -37,9 +37,12 @@
 		}
     }
     function showTodoList() {
+		window.setTimeout(instantShowTodoList(),100);
+    }
+	function instantShowTodoList(){
         initXmlRequests();
         self.xmlHttpReq.send("action=show\n");
-    }
+	}
     function clearList() {
         initXmlRequests();
         self.xmlHttpReq.send("action=delete\n");
@@ -92,14 +95,11 @@
 	function deleteDone(){
 	}
 	function onKeyPressHandle(e){
-		alert(e.key);
-		if(e.key == "^p")
-			alert("Strg p");
 		if (e.key  == "Enter"){
 			addToTodolist();
 	  }
 	}
-    window.onload = showTodoList;
+    window.onload = instantShowTodoList;
     </script>
     <title>ToDo Liste in COBOL</title>
 </head>
