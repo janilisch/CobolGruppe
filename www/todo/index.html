@@ -14,7 +14,7 @@
         else if (window.ActiveXObject) {
             self.xmlHttpReq = new ActiveXObject("Microsoft.XMLHTTP");
         }
-        self.xmlHttpReq.open('POST', 'http://localhost:8080/cgi-bin/todohandler', true);
+        self.xmlHttpReq.open('POST', 'http://' + location.host + '/cgi-bin/todohandler', true);
         self.xmlHttpReq.setRequestHeader('Content-Type',
         'application/x-www-form-urlencoded');
         self.xmlHttpReq.onreadystatechange = function() {
