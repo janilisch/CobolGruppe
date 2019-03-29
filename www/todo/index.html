@@ -91,6 +91,14 @@
 	}
 	function deleteDone(){
 	}
+	function onKeyPressHandle(e){
+		alert(e.key);
+		if(e.key == "^p")
+			alert("Strg p");
+		if (e.key  == "Enter"){
+			addToTodolist();
+	  }
+	}
     window.onload = showTodoList;
     </script>
     <title>ToDo Liste in COBOL</title>
@@ -98,10 +106,10 @@
 <body>
     <h1>Eine ToDo Liste in COBOL</h1><br>
 	
-        <form name="f1">
+        <form name="f1" >
             <h2>Todo hinzuf&uuml;gen: </h2>
 			<div align="center">
-				<input name="content" id="content" type="text" text="50" placeholder="ToDo hier eingeben" >
+				<input name="content" id="content" type="text" text="50" placeholder="ToDo hier eingeben"  onkeypress="onKeyPressHandle(event)">
 				<input value="Eintragen" type="button" class="button" onclick='javascript:addToTodolist()'>
 			</div>
 					
