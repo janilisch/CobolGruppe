@@ -27,7 +27,7 @@
           10  WS-CURRENT-YEAR         PIC 9(04).
           10  WS-CURRENT-MONTH        PIC 9(02).
           10  WS-CURRENT-DAY          PIC 9(02).
-        05  ITEM-TO-DELETE          PIC 999.
+        05  ITEM-TO-DELETE          PIC 9(5) VALUE 00002.
         05  NUMBER-OF-TODOS         PIC 999.
            88 LIST-IS-EMPTY VALUE ZERO.
         05  COUNTER                 PIC 999.
@@ -81,7 +81,8 @@
           .
 
        ADD-NEW-TODO-ITEM SECTION.
-           OPEN INPUT TDLIST
+           DISPLAY "Hallo"
+		   OPEN INPUT TDLIST
              PERFORM UNTIL WS-EOF='Y'
                  READ TDLIST INTO WS-TDLIST
                     AT END MOVE 'Y' TO WS-EOF
@@ -137,7 +138,6 @@
                     ITEM-DATE IN WS-TDLIST(11:2) " "
                     ITEM-CONTENT IN WS-TDLIST "</li> </label>"
           EXIT.
-
        READ-TODOLIST-FROM-FILE SECTION.
           OPEN INPUT TDLIST
              DISPLAY "<ul>"

@@ -106,4 +106,11 @@
                                  IT-COLOR
                                  IT-STATUS
           EXIT.
+	   DELETE-SPECIFIC SECTION.
+	      DISPLAY "Hallo"
+	      MOVE "content" TO PARAMETER-NAME
+          PERFORM READ-PARAMETER-VALUE
+          CALL "TODOLISTE" USING TODO-ACTION
+                                  PARAMETER-VALUE
+          EXIT.
        END PROGRAM TODOHANDLER.
