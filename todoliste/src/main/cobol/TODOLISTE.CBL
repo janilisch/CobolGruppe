@@ -121,17 +121,18 @@
               WHEN DONE MOVE "Done----" TO STATUS-STRING
               WHEN CANCELED MOVE "Canceled" TO STATUS-STRING
           END-EVALUATE
-          DISPLAY '<li style=""color: ' FONTCOLOR '"">'
-                    '<label class=""container"">'
-                    '<input type = ""checkbox"" '
-                    'name = ""checkbox"" '
-                    'id = ""' ITEM-ID IN WS-TDLIST '"">'
+          DISPLAY "<li style=""color: " FONTCOLOR """>"
+            "<label class=""outerlabel""><label class=""container"">"
+                    "<input type = ""checkbox"" "
+                    "name = ""checkbox"" "
+                    "id = """ ITEM-ID IN WS-TDLIST 
+                    """><span class=""checkmark""></label>"
                     STATUS-STRING " "
       	            ITEM-DATE IN WS-TDLIST(7:2) "."
                     ITEM-DATE IN WS-TDLIST(5:2) ", "
                     ITEM-DATE IN WS-TDLIST(9:2) ":"
                     ITEM-DATE IN WS-TDLIST(11:2) " "
-                    ITEM-CONTENT IN WS-TDLIST "</li> </label>"
+                    ITEM-CONTENT IN WS-TDLIST "</label></li> "
           EXIT.
        TD-TO-RAM SECTION.
            OPEN INPUT TDLIST
