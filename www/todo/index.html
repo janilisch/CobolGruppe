@@ -50,7 +50,7 @@
 	function printList() {
 	    var printContent = document.getElementById("result");
 	    var WinPrint = window.open('','','left = 0, top=0, width=800,height=900,toolbar=0,scrollbars=0,status=0!');
-        WinPrint.document.write(printContent.innerHTML);
+        WinPrint.document.write(removeCheckboxFromHtml(printContent.innerHTML));
 	    WinPrint.document.close();
         WinPrint.focus();
 	    WinPrint.print();
@@ -119,6 +119,23 @@
 		if (e.key  == "Enter"){
 			addToTodolist();
 	  }
+	}
+	function removeCheckboxFromHtml(str){
+		alert(str);
+		var pos = str.indexOf("<input type=\"checkbox\" name=\"checkbox\" id=\"");
+		alert(pos);
+		while(pos >= 0){
+			var str1 = str.substring(0, pos);
+			var str2 = str.substring(pos+50, str.length);
+			alert(str1);
+			alert(str2);
+			str = str1 + str2;
+			alert(str);
+			pos = str.indexOf("<input type=\"checkbox\" name=\"checkbox\" id=\"");
+			alert(pos);
+		}
+		alert("End");
+		return str;
 	}
     window.onload = instantShowTodoList;
     </script>
