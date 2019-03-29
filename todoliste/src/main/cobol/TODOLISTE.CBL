@@ -82,7 +82,7 @@
 
        ADD-NEW-TODO-ITEM SECTION.
            DISPLAY "Hallo"
-		   OPEN INPUT TDLIST
+		       OPEN INPUT TDLIST
              PERFORM UNTIL WS-EOF='Y'
                  READ TDLIST INTO WS-TDLIST
                     AT END MOVE 'Y' TO WS-EOF
@@ -95,7 +95,9 @@
            ADD 1 TO ITEM-ID IN WS-TDLIST
            MOVE NEW-TODO-ITEM
              TO ITEM-CONTENT IN WS-TDLIST
-           MOVE IT-COLOR   TO ITEM-COLOR IN WS-TDLIST
+           IF IT-COLOR<5
+             MOVE IT-COLOR   TO ITEM-COLOR IN WS-TDLIST
+           END-IF
            OPEN EXTEND TDLIST
            WRITE TDLIST-FILE FROM WS-TDLIST
            CLOSE TDLIST
@@ -217,10 +219,14 @@
            END-PERFORM
            MOVE TODO-ITEM(COUNTER) TO WS-TDLIST
            IF WS-EOF="Y"
+             IF IT-COLOR<5
               MOVE IT-COLOR
               TO ITEM-COLOR IN WS-TDLIST
+             END-IF
+             IF IT-STATUS<5
               MOVE IT-STATUS
               TO ITEM-STATUS IN WS-TDLIST
+            END-IF
            END-IF
            WRITE TDLIST-FILE FROM WS-TDLIST
           END-PERFORM
