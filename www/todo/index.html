@@ -30,7 +30,7 @@
 		} else {
 			initXmlRequests();
 			qstr = 'content=' + escape(word);  // NOTE: no '?' before querystring
-			qstr = qstr + "&action=add\n"
+			qstr = qstr + "&color=" +selectedColor() + "&action=add\n"
 			self.xmlHttpReq.send(qstr);
 			document.getElementById("content").value = "";
 			showTodoList();
@@ -81,11 +81,18 @@
     }
 	
 	function aendernSelected(){
-		alert("selectedToDos: "+checkCheckboxesArray());
-		alert("selectedColor: "+selectedColor());
-		alert("selectedStatus: "+selectedStatus());
+		initXmlRequests();
+		qstr = 'ids=' + checkCheckboxesArray();
+		qstr = qstr + "&status=" + selectedStatus() + "&color=" + selectedColor() + "&action=change\n"
+		self.xmlHttpReq.send(qstr);
+		showTodoList();
 	}
 	function deleteSelected(){
+		initXmlRequests();
+		qstr = 'ids=' + checkCheckboxesArray();
+		qstr = qstr + "&action=remove\n"
+		self.xmlHttpReq.send(qstr);
+		showTodoList();
 	}
 	function deleteConceld(){
 	}
