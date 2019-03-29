@@ -129,16 +129,18 @@
               WHEN CANCELED MOVE "Canceled" TO STATUS-STRING
           END-EVALUATE
           DISPLAY "<li style=""color: " FONTCOLOR """>"
-                    "<label>"
+            "<label class=""container"">"
                     "<input type = ""checkbox"" "
                     "name = ""checkbox"" "
-                    "id = """ ITEM-ID IN WS-TDLIST """>"
+                    "id = """ ITEM-ID IN WS-TDLIST 
+                    """><span class=""checkmark""></span></label>"
+                    "<label for=""" ITEM-ID IN WS-TDLIST """>"
                     STATUS-STRING " "
       	            ITEM-DATE IN WS-TDLIST(7:2) "."
                     ITEM-DATE IN WS-TDLIST(5:2) ", "
                     ITEM-DATE IN WS-TDLIST(9:2) ":"
                     ITEM-DATE IN WS-TDLIST(11:2) " "
-                    ITEM-CONTENT IN WS-TDLIST "</li> </label>"
+                    ITEM-CONTENT IN WS-TDLIST "</label></li> "
           EXIT.
        READ-TODOLIST-FROM-FILE SECTION.
           OPEN INPUT TDLIST
