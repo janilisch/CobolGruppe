@@ -94,15 +94,15 @@
 		self.xmlHttpReq.send(qstr);
 		showTodoList();
 	}
-	function deleteConceld(){
+	function deleteCanceled(){
 		initXmlRequests();
-		qstr = qstr + "&action=remove-cancled\n"
+		qstr = "action=remove-canceled\n"
 		self.xmlHttpReq.send(qstr);
 		showTodoList();
 	}
 	function deleteDone(){
 		initXmlRequests();
-		qstr = qstr + "&action=remove-done\n"
+		qstr = "action=remove-done\n"
 		self.xmlHttpReq.send(qstr);
 		showTodoList();
 	}
@@ -140,7 +140,7 @@
 			
             <input value="Ändern" type="button" class="button" onclick='javascript:aendernSelected()'>
             <input value="Löschen" type="button" class="button" onclick='javascript:deleteSelected()'>
-            <input value="Alle 'Cancelled' löschen" class="button buttonRed" type="button" onclick='javascript:deleteConceld()'>
+            <input value="Alle 'Cancelled' löschen" class="button buttonRed" type="button" onclick='javascript:deleteCanceled()'>
             <input value="Alle 'Done' löschen" class="button buttonRed" type="button" onclick='javascript:deleteDone()'>
             <input value="Ganze Liste löschen" class="button buttonRed" type="button" onclick='javascript:clearList()'>
 			</div>

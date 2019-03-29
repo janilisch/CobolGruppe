@@ -5,4 +5,4 @@
           88 ACTION-REMOVE VALUE "remove".
           88 ACTION-CHANGE VALUE "change".
           88 ACTION-REMOVE-DONE VALUE "remove-done".
-          88 ACTION-REMOVE-CANCLED VALUE "remove-cancled".
+          88 ACTION-REMOVE-CANCELED VALUE "remove-canceled".

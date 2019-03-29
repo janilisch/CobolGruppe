@@ -34,7 +34,7 @@
         05  TODOLISTE.
             07  TODO-ITEM PIC X(64) OCCURS 999.
         05 FONTCOLOR                   PIC X(6).
-        05 STATUS-STRING               PIC X(6).
+        05 STATUS-STRING               PIC X(8).
         01 WS-EOF PIC A(1).
         01 WS-ID-COUNTER PIC 999.
         01 WS-TDLIST.
@@ -74,8 +74,8 @@
               PERFORM CHANGE-ITEMS
            WHEN ACTION-REMOVE-DONE
               PERFORM REMOVE-DONE
-           WHEN ACTION-REMOVE-CANCLED
-              PERFORM REMOVE-CANCLED
+           WHEN ACTION-REMOVE-CANCELED
+              PERFORM REMOVE-CANCELED
            END-EVALUATE
            GOBACK
           .
@@ -179,7 +179,7 @@
 		      END-PERFORM
           CLOSE TDLIST
           EXIT.
-       DELETE-DONE SECTION.
+       REMOVE-DONE SECTION.
           PERFORM TD-TO-RAM
           OPEN OUTPUT TDLIST
           PERFORM VARYING COUNTER FROM 1
@@ -191,13 +191,13 @@
           END-PERFORM
           CLOSE TDLIST
           EXIT.
-       DELETE-CANCLED SECTION.
+       REMOVE-CANCELED SECTION.
           PERFORM TD-TO-RAM
           OPEN OUTPUT TDLIST
           PERFORM VARYING COUNTER FROM 1
                  BY 1 UNTIL COUNTER>NUMBER-OF-TODOS
-            IF NOT TODO-ITEM(COUNTER)(62:1)=3
               MOVE TODO-ITEM(COUNTER) TO WS-TDLIST
+            IF NOT ITEM-STATUS IN WS-TDLIST = 3
               WRITE TDLIST-FILE FROM WS-TDLIST
             END-IF
           END-PERFORM

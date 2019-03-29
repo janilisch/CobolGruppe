@@ -39,7 +39,7 @@
               PERFORM CHANGE-SELECTED
            WHEN ACTION-REMOVE-DONE
               PERFORM CALL-TODOLISTE
-           WHEN ACTION-REMOVE-CANCLED
+           WHEN ACTION-REMOVE-CANCELED
               PERFORM CALL-TODOLISTE
            WHEN OTHER
               DISPLAY "Action unbekannt: " TODO-ACTION
@@ -99,7 +99,7 @@
           MOVE PARAMETER-VALUE TO IT-STATUS
           PERFORM CALL-TODOLISTE
           EXIT.
-      CALL-TODOLISTE SECTION.
+       CALL-TODOLISTE SECTION.
           CALL "TODOLISTE" USING TODO-ACTION
                                  NEW-TODO-ITEM
                                  IT-IDS
